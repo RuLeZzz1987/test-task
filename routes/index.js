@@ -29,7 +29,9 @@ router.post('/sign-in', async (req, res) => {
     }
   }
 
-  if (await bcrypt.compare(password, user.password)) {
+  const passwordCompareResult = await bcrypt.compare(password, user.password);
+
+  if (!passwordCompareResult) {
     return res.sendStatus(401);
   }
 

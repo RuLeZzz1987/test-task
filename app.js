@@ -9,7 +9,7 @@ const logger = require('morgan');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
-
+const passport = require('./auth');
 const app = express();
 
 app.use(logger('dev'));
@@ -19,9 +19,9 @@ app.use(cookieParser());
 
 app.use('/', indexRouter);
 
-require('./auth')(app, require('passport'));
+app.use(passport.initialize());
 
-app.use('/users', usersRouter);
+app.use('/users', passport.authenticate('jwt', {session: false}), usersRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

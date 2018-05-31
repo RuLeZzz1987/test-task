@@ -1,21 +1,19 @@
 "use strict";
 
 const config = require('config');
-const { Strategy:JwtStrategy, ExtractJwt } = require('passport-jwt');
+const { Strategy: JwtStrategy, ExtractJwt } = require('passport-jwt');
+const passport = require('passport');
 
 const opts = {
   secretOrKey: config.get('jwtSecret'),
-  jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('jwt'),
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken('jwt'),
   ignoreExpiration: false
 };
 
-module.exports = function (app, passport) {
 
-  passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
+passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
+  console.log(jwt_payload);
+  done(null, { ok: 1 });
+}));
 
-  done(null, {ok :1});
-  }));
-
-  app.use(passport.initialize());
-
-};
+module.exports = passport;

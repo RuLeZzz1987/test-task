@@ -86,7 +86,7 @@ module.exports = {
 
     const id = uuid.v4();
 
-    validatedUser.password = await bcrypt.hash(validatedUser.password, 15);
+    validatedUser.password = await bcrypt.hash(validatedUser.password);
     validatedUser.email = validatedUser.email.toLowerCase();
 
     db.users[id] = validatedUser;
